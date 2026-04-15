@@ -10,10 +10,11 @@ public class Boid {
 
     public Boid(BoidsLogic p){
     parent = p;
-    int x = 10;
-    int y = 10;
+    x = 10;
+    y = 10;
     speedX = 5;
     speedY = 5;
+
     }
 
     

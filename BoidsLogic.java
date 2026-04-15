@@ -1,30 +1,35 @@
 public class BoidsLogic {
-public Handler parent;
+public BoidsPanel parent;
 public Boid boid;
+boolean running;
 
-    public BoidsLogic(Handler p){
+    public BoidsLogic(BoidsPanel p){
         parent = p;
         boid = new Boid(this);
+        running = true;
 
         Sepration();
         Cohrention();
         Alignment();
+        Updatepos(boid.x, boid.y);
     }
     
     public void Updatepos(int x, int y) {
 
         x=(int)(x+boid.speedX);
         y=(int)(y+boid.speedY);
-        if(!(parent.boidsGUI == null)) {
-            parent.boidsGUI.boidspanel.repaint();
-        }
+        parent.repaint();
 
         try {
             Thread.sleep(10);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // bevar interrupt-status
+        } catch (InterruptedException e){
+            Thread.currentThread().interrupt();
         }
-        Updatepos(x,y);
+
+
+        while(running) {
+            Updatepos(x, y);
+        }
     }
 
     // sepration
