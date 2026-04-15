@@ -4,9 +4,11 @@ public class Boid {
     private BoidsLogic parent;
     int x;
     int y;
-    int[] pos = new int[3];
-    public Boid(BoidsLogic p){
+    double speedX;
+    double speedY;
 
+    public Boid(BoidsLogic p){
+    parent = p;
 
     }
 }
