@@ -15,5 +15,7 @@ public class BoidsPanel extends JPanel{
         super.paintComponent(g);
         g.setColor(Color.cyan);
         g.fillOval(parent.parent.boidslogic.boid.x,parent.parent.boidslogic.boid.y,10,10);
+        
     }
+    
 }
