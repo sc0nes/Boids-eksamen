@@ -1,6 +1,6 @@
 public class BoidsLogic {
-private Handler parent;
-private Boid boid;
+public Handler parent;
+public Boid boid;
 
     public BoidsLogic(Handler p){
         parent = p;

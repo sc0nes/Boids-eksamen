@@ -1,6 +1,6 @@
 public class Handler {
-    private BoidsLogic boidslogic;
-    private BoidsGUI boidsGUI;
+    public BoidsLogic boidslogic;
+    public BoidsGUI boidsGUI;
 
 
     public Handler(){
