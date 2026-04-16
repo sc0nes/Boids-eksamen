@@ -11,7 +11,7 @@ public class Boid {
     public Boid(BoidsLogic p){
     parent = p;
     x = 10;
-    y = 10;
+    y = (int)(Math.random()*50);
     speedX = 5;
     speedY = 5;
     }

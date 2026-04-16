@@ -16,8 +16,8 @@ public class BoidsPanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.cyan);
-        g.fillOval(boidslogic.boid.x,boidslogic.boid.y,10,10);
+        //g.setColor(Color.cyan);
+        g.fillOval(boidslogic.boids.get(0).x,boidslogic.boid.y,10,10);
         
     }
     
