@@ -14,7 +14,7 @@ public List<Boid> boids;
 
 
         AddingBoidsToList();
-        Sepration();
+        //Sepration();
         Cohrention();
         Alignment();
         
@@ -48,23 +48,17 @@ public List<Boid> boids;
     	}
     	
 
-        boids.get(a).x=(int)(boids.get(a).x+boids.get(a).speedX);
-        boids.get(a).y=(int)(boids.get(a).y+boids.get(a).speedY);
-        
-        
-        parent.repaint();
+        boids.get(a).x += (int)boids.get(a).speedX;
+        boids.get(a).y += (int)boids.get(a).speedY;
 
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+
+
 
 
     }
 
     // sepration
-    public void Sepration(){
+    public void Sepration(Boid b){
 
     }
 

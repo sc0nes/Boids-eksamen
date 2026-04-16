@@ -6,6 +6,6 @@ public class Main {
     public static void main(String[] args) {
         BoidsGUI boidsgui = new BoidsGUI();
         System.out.println(0);
-        boidsgui.boidspanel.run();
+
     }
 }

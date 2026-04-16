@@ -12,8 +12,8 @@ public class Boid {
     parent = p;
     x = (int)(Math.random()*50);
     y = (int)(Math.random()*50);
-    speedX =(int)(Math.random()*5);
-    speedY = (int)(Math.random()*5);
+    speedX = 1;
+    speedY = 1;
     }
     
     
