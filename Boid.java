@@ -14,8 +14,7 @@ public class Boid {
     y = 10;
     speedX = 5;
     speedY = 5;
-
     }
-
+    
     
 }

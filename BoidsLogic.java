@@ -11,13 +11,13 @@ boolean running;
         Sepration();
         Cohrention();
         Alignment();
-        Updatepos(boid.x, boid.y);
+        
     }
     
-    public void Updatepos(int x, int y) {
+    public void Updatepos() {
 
-        x=(int)(x+boid.speedX);
-        y=(int)(y+boid.speedY);
+        boid.x=(int)(boid.x+boid.speedX);
+        boid.y=(int)(boid.y+boid.speedY);
         parent.repaint();
 
         try {
@@ -27,9 +27,6 @@ boolean running;
         }
 
 
-        while(running) {
-            Updatepos(x, y);
-        }
     }
 
     // sepration
