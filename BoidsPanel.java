@@ -16,8 +16,10 @@ public class BoidsPanel extends JPanel{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //g.setColor(Color.cyan);
-        g.fillOval(boidslogic.boids.get(0).x,boidslogic.boid.y,10,10);
+        g.setColor(Color.cyan);
+        for (int i = 0; i<3; i++) {
+        	g.fillOval(boidslogic.boids.get(i).x,boidslogic.boids.get(i).y,10,10);
+        }
         
     }
     
@@ -28,7 +30,10 @@ public class BoidsPanel extends JPanel{
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while (boidslogic.boid != null) {
-        	boidslogic.Updatepos();   // Update character positions, etc.
+        	for (int i = 0; i<3; i++) {	
+        	boidslogic.Updatepos(i);
+        }
+        	// Update character positions, etc.
             repaint();  // Request a paintComponent call
 
             try {
