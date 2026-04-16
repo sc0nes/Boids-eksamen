@@ -10,10 +10,10 @@ public class Boid {
 
     public Boid(BoidsLogic p){
     parent = p;
-    x = (int)(Math.random()*50);
-    y = (int)(Math.random()*50);
-    speedX = 1;
-    speedY = 1;
+    x = (int)(Math.random()*500);
+    y = (int)(Math.random()*500);
+    speedX = (int)(Math.random()*5);
+    speedY = (int)(Math.random()*5);
     }
     
     
