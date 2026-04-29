@@ -6,21 +6,22 @@ public Boid boid;
 boolean running;
 public List<Boid> boids;
 public List<Boid> Updateboids;
-int separationradius;
-int alignmentradius;
+int separationRadius;
+int alignmentRadius;
+int cohrentionRadius;
 int boidsSize;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
         running = true;
         boid = new Boid(this);
-        separationradius = 50;
-        alignmentradius = 75;
-
+        separationRadius = 30;
+        alignmentRadius = 40;
+        cohrentionRadius = 60;
 
 
         AddingBoidsToList();
-        Cohrention(1);
+        
 
     }
 
@@ -58,6 +59,7 @@ int boidsSize;
 
         Sepration(a);
         Alignment(a);
+        Cohrention(a);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX;
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY;
@@ -77,7 +79,7 @@ int boidsSize;
                 int dx = boids.get(n).x - boids.get(i).x;
                 int dy = boids.get(n).y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx*dx + dy*dy);
-                if (tempradius < separationradius){
+                if (tempradius < separationRadius){
                     moveX += dx / tempradius;
                     moveY += dy / tempradius;
                 }
@@ -90,8 +92,29 @@ int boidsSize;
     }
 
     // cohrention
+  
+    
     public void Cohrention(int n){
-
+    	int sumx = 0;
+    	int sumy = 0;
+    	int antal = 0;
+    	
+    	for(int i = 0; i<boidsSize; i++){
+            if (i != n) {
+                int dx = boids.get(n).x - boids.get(i).x;
+                int dy = boids.get(n).y - boids.get(i).y;
+                double tempradius = Math.sqrt(dx * dx + dy * dy);
+                if (tempradius < cohrentionRadius) {
+                	sumx += boids.get(i).x;
+                	sumy += boids.get(i).y;
+                	antal++;
+                }
+            }
+        }
+    	if (antal!=0) {
+    		Updateboids.get(n).speedX += ((sumx/antal)-boids.get(n).x)*0.05;
+    		Updateboids.get(n).speedY += ((sumy/antal)-boids.get(n).y)*0.05;
+    	}
     	
     }
 
@@ -105,7 +128,7 @@ int boidsSize;
                 int dx = boids.get(n).x - boids.get(i).x;
                 int dy = boids.get(n).y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx * dx + dy * dy);
-                if (tempradius < alignmentradius) {
+                if (tempradius < alignmentRadius) {
                     alignmentX += boids.get(i).speedX;
                     alignmentY += boids.get(i).speedY;
                     count++;
@@ -120,4 +143,5 @@ int boidsSize;
             Updateboids.get(n).speedY += (alignmentY-boids.get(n).speedY)*0.05;
         }
     }
+    
 }
