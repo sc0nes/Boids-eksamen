@@ -8,6 +8,7 @@ public List<Boid> boids;
 public List<Boid> Updateboids;
 int separationradius;
 int alignmentradius;
+int boidsSize;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
@@ -29,9 +30,11 @@ int alignmentradius;
         for(int i = 0; i<20;i++) {
             boids.add(new Boid(this));
         }
-        for(int i = 0; i<20; i++) {
+        boidsSize = boids.size();
+        for(int i = 0; i<boidsSize; i++) {
             Updateboids.add(boids.get(i));
         }
+
 
     }
 
@@ -69,7 +72,7 @@ int alignmentradius;
         double moveX = 0;
         double moveY = 0;
 
-        for(int i = 0; i<20; i++){
+        for(int i = 0; i<boidsSize; i++){
             if (i != n){
                 int dx = boids.get(n).x - boids.get(i).x;
                 int dy = boids.get(n).y - boids.get(i).y;
@@ -96,7 +99,7 @@ int alignmentradius;
         double alignmentX = 0;
         double alignmentY = 0;
         int count = 0;
-        for(int i = 0; i<20; i++){
+        for(int i = 0; i<boidsSize; i++){
             if (i != n) {
                 int dx = boids.get(n).x - boids.get(i).x;
                 int dy = boids.get(n).y - boids.get(i).y;
