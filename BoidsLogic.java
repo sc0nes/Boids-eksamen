@@ -15,7 +15,7 @@ int boidsSize;
         running = true;
         boid = new Boid(this);
         separationradius = 50;
-        alignmentradius = 75;
+        alignmentradius = 60;
 
 
 
@@ -85,8 +85,8 @@ int boidsSize;
 
             }
         }
-        Updateboids.get(n).speedX += moveX * 0.5;
-        Updateboids.get(n).speedY += moveY * 0.5;
+        Updateboids.get(n).speedX += moveX * 0.25;
+        Updateboids.get(n).speedY += moveY * 0.25;
     }
 
     // cohrention
