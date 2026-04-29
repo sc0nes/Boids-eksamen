@@ -15,7 +15,7 @@ public class BoidsGUI {
         boidspanel = new BoidsPanel(this);
         mainframe.add(boidspanel);
         mainframe.pack();
-        System.out.println("hello");
+
 
     }
 }

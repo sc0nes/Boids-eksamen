@@ -6,21 +6,21 @@ public Boid boid;
 boolean running;
 public List<Boid> boids;
 public List<Boid> Updateboids;
-int radius;
+int separationradius;
+int alignmentradius;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
         running = true;
         boid = new Boid(this);
-        radius = 50;
+        separationradius = 50;
+        alignmentradius = 75;
 
 
 
         AddingBoidsToList();
-        //Sepration();
         Cohrention(1);
-        Alignment(1);
-        
+
     }
 
     private void AddingBoidsToList() {
@@ -32,7 +32,7 @@ int radius;
         for(int i = 0; i<20; i++) {
             Updateboids.add(boids.get(i));
         }
-        System.out.println(boids);
+
     }
 
     public void Updatepos(int a) {
@@ -54,6 +54,7 @@ int radius;
     	}
 
         Sepration(a);
+        Alignment(a);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX;
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY;
@@ -64,18 +65,16 @@ int radius;
 
     // sepration
     public void Sepration(int n){
-        int dx;
-        int dy;
-        double tempradius;
+
         double moveX = 0;
         double moveY = 0;
 
-        for(int i = 0; i<3; i++){
+        for(int i = 0; i<20; i++){
             if (i != n){
-                dx = boids.get(n).x - boids.get(i).x;
-                dy = boids.get(n).y - boids.get(i).y;
-                tempradius = Math.sqrt(dx*dx + dy*dy);
-                if (tempradius < radius){
+                int dx = boids.get(n).x - boids.get(i).x;
+                int dy = boids.get(n).y - boids.get(i).y;
+                double tempradius = Math.sqrt(dx*dx + dy*dy);
+                if (tempradius < separationradius){
                     moveX += dx / tempradius;
                     moveY += dy / tempradius;
                 }
@@ -89,11 +88,32 @@ int radius;
 
     // cohrention
     public void Cohrention(int n){
-        System.out.println("det");
+
     }
 
     // alignment
     public void Alignment(int n){
-        System.out.println("virker");
+        double alignmentX = 0;
+        double alignmentY = 0;
+        int count = 0;
+        for(int i = 0; i<20; i++){
+            if (i != n) {
+                int dx = boids.get(n).x - boids.get(i).x;
+                int dy = boids.get(n).y - boids.get(i).y;
+                double tempradius = Math.sqrt(dx * dx + dy * dy);
+                if (tempradius < alignmentradius) {
+                    alignmentX += Updateboids.get(n).speedX;
+                    alignmentY += Updateboids.get(n).speedY;
+                    count++;
+                }
+            }
+        }
+        if(count > 0){
+            alignmentX = alignmentX/count;
+            alignmentY = alignmentY/count;
+
+            Updateboids.get(n).speedX += (alignmentX-boids.get(n).speedX)*0.10;
+            Updateboids.get(n).speedY += (alignmentY-boids.get(n).speedY)*0.10;
+        }
     }
 }

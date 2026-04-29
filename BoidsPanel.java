@@ -11,7 +11,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
     public BoidsPanel(BoidsGUI p) {
         parent = p;
         boidslogic = new BoidsLogic(this);
-        Timer timer = new Timer(30, this);
+        Timer timer = new Timer(20, this);
         timer.setRepeats(true);
         timer.start();
 
@@ -23,7 +23,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.cyan);
+        g.setColor(Color.black);
         for (int i = 0; i < 20; i++) {
             g.fillOval(boidslogic.boids.get(i).x, boidslogic.boids.get(i).y, 10, 10);
         }
