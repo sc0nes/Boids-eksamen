@@ -92,6 +92,7 @@ int boidsSize;
     // cohrention
     public void Cohrention(int n){
 
+    	
     }
 
     // alignment
