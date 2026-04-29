@@ -40,10 +40,9 @@ public class BoidsPanel extends JPanel implements ActionListener {
 
         for (int i = 0; i<boidslogic.boidsSize;i++) {
             Graphics2D tri = (Graphics2D) g2.create();
-            angle = Math.atan2(boidslogic.boids.get(i).speedY,boidslogic.boids.get(i).speedX);
 
             tri.translate(boidslogic.boids.get(i).x,boidslogic.boids.get(i).y);
-            tri.rotate(angle);
+            tri.rotate(boidslogic.boids.get(i).angle);
 
             int[] xpoints = {10,-10,-10};
             int[] ypoints = {0,-6,6};
@@ -60,8 +59,8 @@ public class BoidsPanel extends JPanel implements ActionListener {
             boidslogic.Updatepos(i);
         }
 
-        boidslogic.boids = boidslogic.Updateboids;
-        repaint();
 
+        repaint();
+        boidslogic.boids = boidslogic.Updateboids;
     }
 }

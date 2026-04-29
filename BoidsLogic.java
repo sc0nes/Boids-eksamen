@@ -18,17 +18,17 @@ int boidsSize;
         alignmentRadius = 40;
         cohrentionRadius = 60;
         separationRadius = 30;
-     
+        boidsSize = 200;
+
        AddingBoidsToList();
     }
-    
+
     private void AddingBoidsToList() {
         boids = new ArrayList<Boid>();
         Updateboids = new ArrayList<Boid>();
-        for(int i = 0; i<20;i++) {
+        for(int i = 0; i<boidsSize ;i++) {
             boids.add(new Boid(this));
         }
-        boidsSize = boids.size();
         for(int i = 0; i<boidsSize; i++) {
             Updateboids.add(boids.get(i));
         }
@@ -38,34 +38,34 @@ int boidsSize;
 
     public void Updatepos(int a) {
     	
-    	if (boids.get(a).speedX > 0 && boids.get(a).x > parent.parent.Width - 40) {
+    	if (boids.get(a).x > parent.parent.Width) {
             boids.get(a).x -= parent.parent.Width;
     	}
     	
-    	if (boids.get(a).speedX < 0 && boids.get(a).x < 1) {
+    	if ( boids.get(a).x < 0) {
     		boids.get(a).x += parent.parent.Width;
     	}
     	
-    	if (boids.get(a).speedY > 0 && boids.get(a).y > parent.parent.Height - 50) {
+    	if ( boids.get(a).y > parent.parent.Height) {
             boids.get(a).y -= parent.parent.Height;
     	}
     	
-    	if (boids.get(a).speedY < 0 && boids.get(a).y < 1) {
+    	if (boids.get(a).y < 0) {
             boids.get(a).y += parent.parent.Height;
     	}
 
         Sepration(a);
         Alignment(a);
-        Cohrention(a);
+        //Cohrention(a);
 
-        Updateboids.get(a).x += (int)Updateboids.get(a).speedX;
-        Updateboids.get(a).y += (int)Updateboids.get(a).speedY;
+        Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
+        Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
 
 
 
     }
 
-    // sepration
+    //sepration
     public void Sepration(int n){
 
         double moveX = 0;
@@ -84,18 +84,17 @@ int boidsSize;
 
             }
         }
-        Updateboids.get(n).speedX += moveX * 0.25;
-        Updateboids.get(n).speedY += moveY * 0.25;
+        Updateboids.get(n).angle += Math.atan2(moveY,moveX)*0.25;
     }
 
     // cohrention
-  
-    
+
+
     public void Cohrention(int n){
     	int sumx = 0;
     	int sumy = 0;
     	int antal = 0;
-    	
+
     	for(int i = 0; i<boidsSize; i++){
             if (i != n) {
                 int dx = boids.get(n).x - boids.get(i).x;
@@ -109,8 +108,7 @@ int boidsSize;
             }
         }
     	if (antal!=0) {
-    		Updateboids.get(n).speedX += ((sumx/antal)-boids.get(n).x)*0.05;
-    		Updateboids.get(n).speedY += ((sumy/antal)-boids.get(n).y)*0.05;
+    		boids.get(n).angle += Math.atan2(sumy,sumx);
     	}
     	
     }
@@ -126,8 +124,8 @@ int boidsSize;
                 int dy = boids.get(n).y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx * dx + dy * dy);
                 if (tempradius < alignmentRadius) {
-                    alignmentX += boids.get(i).speedX;
-                    alignmentY += boids.get(i).speedY;
+                    alignmentX += boids.get(i).speedX();
+                    alignmentY += boids.get(i).speedY();
                     count++;
                 }
             }
@@ -136,9 +134,7 @@ int boidsSize;
             alignmentX = alignmentX/count;
             alignmentY = alignmentY/count;
 
-            Updateboids.get(n).speedX += (alignmentX-boids.get(n).speedX)*0.05;
-            Updateboids.get(n).speedY += (alignmentY-boids.get(n).speedY)*0.05;
+            Updateboids.get(n).angle += Math.atan2(alignmentY - boids.get(n).speedY(),alignmentX- boids.get(n).speedX())*0.05;
         }
     }
-    
 }
