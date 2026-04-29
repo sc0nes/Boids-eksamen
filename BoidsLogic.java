@@ -115,8 +115,8 @@ int boidsSize;
             alignmentX = alignmentX/count;
             alignmentY = alignmentY/count;
 
-            Updateboids.get(n).speedX += (alignmentX-boids.get(n).speedX)*0.10;
-            Updateboids.get(n).speedY += (alignmentY-boids.get(n).speedY)*0.10;
+            Updateboids.get(n).speedX += (alignmentX-boids.get(n).speedX)*0.05;
+            Updateboids.get(n).speedY += (alignmentY-boids.get(n).speedY)*0.05;
         }
     }
 }
