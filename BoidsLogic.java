@@ -15,16 +15,13 @@ int boidsSize;
         parent = p;
         running = true;
         boid = new Boid(this);
-        separationRadius = 30;
         alignmentRadius = 40;
         cohrentionRadius = 60;
-
-
-        AddingBoidsToList();
-        
-
+        separationRadius = 30;
+     
+       AddingBoidsToList();
     }
-
+    
     private void AddingBoidsToList() {
         boids = new ArrayList<Boid>();
         Updateboids = new ArrayList<Boid>();
@@ -87,8 +84,8 @@ int boidsSize;
 
             }
         }
-        Updateboids.get(n).speedX += moveX * 0.5;
-        Updateboids.get(n).speedY += moveY * 0.5;
+        Updateboids.get(n).speedX += moveX * 0.25;
+        Updateboids.get(n).speedY += moveY * 0.25;
     }
 
     // cohrention
