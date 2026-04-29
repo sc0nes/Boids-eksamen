@@ -38,19 +38,19 @@ int alignmentradius;
     public void Updatepos(int a) {
     	
     	if (boids.get(a).speedX > 0 && boids.get(a).x > parent.parent.Width - 40) {
-    		boids.get(a).speedX= -boids.get(a).speedX;
+            boids.get(a).x -= parent.parent.Width;
     	}
     	
     	if (boids.get(a).speedX < 0 && boids.get(a).x < 1) {
-    		boids.get(a).speedX= -boids.get(a).speedX;
+    		boids.get(a).x += parent.parent.Width;
     	}
     	
     	if (boids.get(a).speedY > 0 && boids.get(a).y > parent.parent.Height - 50) {
-    		boids.get(a).speedY = -boids.get(a).speedY;
+            boids.get(a).y -= parent.parent.Height;
     	}
     	
     	if (boids.get(a).speedY < 0 && boids.get(a).y < 1) {
-    		boids.get(a).speedY= -boids.get(a).speedY;
+            boids.get(a).y += parent.parent.Height;
     	}
 
         Sepration(a);
@@ -102,8 +102,8 @@ int alignmentradius;
                 int dy = boids.get(n).y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx * dx + dy * dy);
                 if (tempradius < alignmentradius) {
-                    alignmentX += Updateboids.get(n).speedX;
-                    alignmentY += Updateboids.get(n).speedY;
+                    alignmentX += boids.get(i).speedX;
+                    alignmentY += boids.get(i).speedY;
                     count++;
                 }
             }
