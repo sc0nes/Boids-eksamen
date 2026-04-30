@@ -23,7 +23,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
     public BoidsPanel(BoidsGUI p) {
         parent = p;
         boidslogic = new BoidsLogic(this);
-        Timer timer = new Timer(20, this);
+        Timer timer = new Timer(30, this);
         timer.setRepeats(true);
         timer.start();
 
@@ -60,8 +60,9 @@ public class BoidsPanel extends JPanel implements ActionListener {
             boidslogic.Updatepos(i);
         }
 
+            boidslogic.boids = boidslogic.Updateboids;
 
         repaint();
-        boidslogic.boids = boidslogic.Updateboids;
+
     }
 }

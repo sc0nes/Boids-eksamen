@@ -18,7 +18,7 @@ int boidsSize;
         alignmentRadius = 40;
         cohrentionRadius = 60;
         separationRadius = 30;
-        boidsSize = 50;
+        boidsSize = 150;
 
        AddingBoidsToList();
     }
@@ -37,26 +37,27 @@ int boidsSize;
     }
 
     public void Updatepos(int a) {
+        Boid current = boids.get(a);
     	
-    	if (boids.get(a).x > parent.parent.Width) {
-            boids.get(a).x -= parent.parent.Width;
+    	if (current.x > parent.parent.Width) {
+            current.x -= parent.parent.Width;
     	}
     	
-    	if ( boids.get(a).x < 0) {
-    		boids.get(a).x += parent.parent.Width;
+    	if ( current.x < 0) {
+            current.x += parent.parent.Width;
     	}
     	
-    	if ( boids.get(a).y > parent.parent.Height) {
-            boids.get(a).y -= parent.parent.Height;
+    	if ( current.y > parent.parent.Height) {
+            current.y -= parent.parent.Height;
     	}
     	
-    	if (boids.get(a).y < 0) {
-            boids.get(a).y += parent.parent.Height;
+    	if (current.y < 0) {
+            current.y += parent.parent.Height;
     	}
 
-        Sepration(a);
-        Alignment(a);
-        Cohrention(a);
+        Sepration(a, current);
+        Alignment(a, current);
+        Cohrention(a, current);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
@@ -66,15 +67,15 @@ int boidsSize;
     }
 
     //sepration
-    public void Sepration(int n){
+    public void Sepration(int n, Boid current){
 
         double moveX = 0;
         double moveY = 0;
 
         for(int i = 0; i<boidsSize; i++){
             if (i != n){
-                int dx = boids.get(n).x - boids.get(i).x;
-                int dy = boids.get(n).y - boids.get(i).y;
+                int dx = current.x - boids.get(i).x;
+                int dy = current.y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx*dx + dy*dy);
                 if (tempradius < separationRadius){
                     moveX += dx / tempradius;
@@ -86,15 +87,15 @@ int boidsSize;
         }
         if(moveX != 0 || moveY != 0){
             double targetAngle = Math.atan2(moveY, moveX);
-            turnToward(boids.get(n), targetAngle, 0.15);   // stronger turn for separation
+            turnToward(current, targetAngle, 0.15);   // stronger turn for separation
         }
     }
 
     // cohrention
 
 
-    public void Cohrention(int n){
-        Boid me = boids.get(n);
+    public void Cohrention(int n, Boid current){
+
 
         double centerX = 0;
         double centerY = 0;
@@ -105,8 +106,8 @@ int boidsSize;
 
             Boid other = boids.get(i);
 
-            double dx = me.x - other.x;
-            double dy = me.y - other.y;
+            double dx = current.x - other.x;
+            double dy = current.y - other.y;
             double dist = Math.sqrt(dx*dx + dy*dy);
 
             if(dist < cohrentionRadius){
@@ -122,16 +123,16 @@ int boidsSize;
             centerY /= count;
 
             // direction from me → center
-            double targetAngle = Math.atan2(centerY - me.y, centerX - me.x);
+            double targetAngle = Math.atan2(centerY - current.y, centerX - current.x);
 
             // smooth turn
-            turnToward(me, targetAngle, 0.03);
+            turnToward(current, targetAngle, 0.03);
         }
     }
 
 
     // alignment
-    public void Alignment(int n){
+    public void Alignment(int n, Boid current){
 
         double sumX = 0;
         double sumY = 0;
@@ -142,8 +143,8 @@ int boidsSize;
 
             Boid other = boids.get(i);
 
-            double dx = boids.get(n).x - other.x;
-            double dy = boids.get(n).y - other.y;
+            double dx = current.x - other.x;
+            double dy = current.y - other.y;
             double dist = Math.sqrt(dx*dx + dy*dy);
 
             if(dist < alignmentRadius){
@@ -155,7 +156,7 @@ int boidsSize;
 
         if(count > 0){
             double avgAngle = Math.atan2(sumY / count, sumX / count);
-            turnToward(boids.get(n), avgAngle, 0.05);
+            turnToward(current, avgAngle, 0.05);
         }
     }
 
