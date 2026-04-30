@@ -56,6 +56,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         for (int i = 0; i < boidslogic.boidsSize; i++) {
+
             boidslogic.Updatepos(i);
         }
 

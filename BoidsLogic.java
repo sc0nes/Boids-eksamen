@@ -18,7 +18,7 @@ int boidsSize;
         alignmentRadius = 40;
         cohrentionRadius = 60;
         separationRadius = 30;
-        boidsSize = 200;
+        boidsSize = 50;
 
        AddingBoidsToList();
     }
@@ -56,7 +56,7 @@ int boidsSize;
 
         Sepration(a);
         Alignment(a);
-        //Cohrention(a);
+        Cohrention(a);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
@@ -84,57 +84,89 @@ int boidsSize;
 
             }
         }
-        Updateboids.get(n).angle += Math.atan2(moveY,moveX)*0.25;
+        if(moveX != 0 || moveY != 0){
+            double targetAngle = Math.atan2(moveY, moveX);
+            turnToward(boids.get(n), targetAngle, 0.15);   // stronger turn for separation
+        }
     }
 
     // cohrention
 
 
     public void Cohrention(int n){
-    	int sumx = 0;
-    	int sumy = 0;
-    	int antal = 0;
+        Boid me = boids.get(n);
 
-    	for(int i = 0; i<boidsSize; i++){
-            if (i != n) {
-                int dx = boids.get(n).x - boids.get(i).x;
-                int dy = boids.get(n).y - boids.get(i).y;
-                double tempradius = Math.sqrt(dx * dx + dy * dy);
-                if (tempradius < cohrentionRadius) {
-                	sumx += boids.get(i).x;
-                	sumy += boids.get(i).y;
-                	antal++;
-                }
+        double centerX = 0;
+        double centerY = 0;
+        int count = 0;
+
+        for(int i = 0; i < boidsSize; i++){
+            if(i == n) continue;
+
+            Boid other = boids.get(i);
+
+            double dx = me.x - other.x;
+            double dy = me.y - other.y;
+            double dist = Math.sqrt(dx*dx + dy*dy);
+
+            if(dist < cohrentionRadius){
+                centerX += other.x;
+                centerY += other.y;
+                count++;
             }
         }
-    	if (antal!=0) {
-    		boids.get(n).angle += Math.atan2(sumy,sumx);
-    	}
-    	
+
+        if(count > 0){
+            // center of mass
+            centerX /= count;
+            centerY /= count;
+
+            // direction from me → center
+            double targetAngle = Math.atan2(centerY - me.y, centerX - me.x);
+
+            // smooth turn
+            turnToward(me, targetAngle, 0.03);
+        }
     }
+
 
     // alignment
     public void Alignment(int n){
-        double alignmentX = 0;
-        double alignmentY = 0;
+
+        double sumX = 0;
+        double sumY = 0;
         int count = 0;
-        for(int i = 0; i<boidsSize; i++){
-            if (i != n) {
-                int dx = boids.get(n).x - boids.get(i).x;
-                int dy = boids.get(n).y - boids.get(i).y;
-                double tempradius = Math.sqrt(dx * dx + dy * dy);
-                if (tempradius < alignmentRadius) {
-                    alignmentX += boids.get(i).speedX();
-                    alignmentY += boids.get(i).speedY();
-                    count++;
-                }
+
+        for(int i = 0; i < boidsSize; i++){
+            if(i == n) continue;
+
+            Boid other = boids.get(i);
+
+            double dx = boids.get(n).x - other.x;
+            double dy = boids.get(n).y - other.y;
+            double dist = Math.sqrt(dx*dx + dy*dy);
+
+            if(dist < alignmentRadius){
+                sumX += Math.cos(other.angle);
+                sumY += Math.sin(other.angle);
+                count++;
             }
         }
-        if(count > 0){
-            alignmentX = alignmentX/count;
-            alignmentY = alignmentY/count;
 
-            Updateboids.get(n).angle += Math.atan2(alignmentY - boids.get(n).speedY(),alignmentX- boids.get(n).speedX())*0.05;
+        if(count > 0){
+            double avgAngle = Math.atan2(sumY / count, sumX / count);
+            turnToward(boids.get(n), avgAngle, 0.05);
         }
     }
+
+    private void turnToward(Boid b, double targetAngle, double turnRate){
+        double diff = targetAngle - b.angle;
+
+        // wrap to [-π, π]
+        if(diff > Math.PI) diff -= 2*Math.PI;
+        if(diff < -Math.PI) diff += 2*Math.PI;
+
+        b.angle += diff * turnRate;
+    }
+
 }
