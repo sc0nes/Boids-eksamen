@@ -40,7 +40,11 @@ public class BoidsPanel extends JPanel implements ActionListener {
 
         for (int i = 0; i<boidslogic.boidsSize;i++) {
             Graphics2D tri = (Graphics2D) g2.create();
-
+            if(boidslogic.boids.get(i).type == 1) {
+                g2.setColor(Color.black);
+            } else {
+                g2.setColor(Color.cyan);
+            }
             tri.translate(boidslogic.boids.get(i).x,boidslogic.boids.get(i).y);
             tri.rotate(boidslogic.boids.get(i).angle);
 

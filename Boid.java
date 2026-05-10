@@ -3,9 +3,12 @@ public class Boid {
     public int x, y;
     public double angle;   // direction the triangle points
     public double speed;   // constant forward speed
+    public int type;
 
     public Boid(BoidsLogic p) {
         parent = p;
+
+        type = (int)(Math.random()* 2);
 
         x = (int)(Math.random() * parent.parent.parent.Width);
         y = (int)(Math.random() * parent.parent.parent.Height);

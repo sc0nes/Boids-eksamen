@@ -18,7 +18,7 @@ int boidsSize;
         alignmentRadius = 40;
         cohrentionRadius = 60;
         separationRadius = 30;
-        boidsSize = 150;
+        boidsSize = 300;
 
        AddingBoidsToList();
     }
@@ -58,6 +58,7 @@ int boidsSize;
         Sepration(a, current);
         Alignment(a, current);
         Cohrention(a, current);
+        Chase(a, current);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
@@ -65,6 +66,23 @@ int boidsSize;
 
 
     }
+
+    private void Chase(int a, Boid current) {
+        Boid target = boids.get(a);
+        if (target.type < current.type) {
+            // 1. Vector from current → target
+            double dx = target.x - current.x;
+            double dy = target.y - current.y;
+
+            // 2. Desired angle toward target
+            double desiredAngle = Math.atan2(dy, dx);
+
+            // 3. Smoothly rotate toward desired angle
+            turnToward(current, desiredAngle, 0.08);
+            // 0.08 = turn speed; adjust as needed
+        }
+    }
+
 
     //sepration
     public void Sepration(int n, Boid current){
@@ -77,7 +95,7 @@ int boidsSize;
                 int dx = current.x - boids.get(i).x;
                 int dy = current.y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx*dx + dy*dy);
-                if (tempradius < separationRadius){
+                if (tempradius < separationRadius && tempradius != 0){
                     moveX += dx / tempradius;
                     moveY += dy / tempradius;
                 }
@@ -142,15 +160,16 @@ int boidsSize;
             if(i == n) continue;
 
             Boid other = boids.get(i);
-
+            if (other.type == current.type){
             double dx = current.x - other.x;
             double dy = current.y - other.y;
             double dist = Math.sqrt(dx*dx + dy*dy);
 
-            if(dist < alignmentRadius){
+            if(dist < alignmentRadius) {
                 sumX += Math.cos(other.angle);
                 sumY += Math.sin(other.angle);
                 count++;
+            } 
             }
         }
 
