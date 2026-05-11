@@ -20,6 +20,7 @@ int boidsSize;
         separationRadius = 30;
         boidsSize = 300;
 
+
        AddingBoidsToList();
     }
 
@@ -37,9 +38,10 @@ int boidsSize;
     }
 
     public void Updatepos(int a) {
+    	Boid current = boids.get(a);
+    
     	
-    	if (current.x > parent.parent.Width) {
-            current.x -= parent.parent.Width;
+    	if (boids.get(a).x > parent.parent.Width) {
             boids.get(a).x -= parent.parent.Width;
     	}
     	
@@ -47,28 +49,20 @@ int boidsSize;
     		boids.get(a).x += parent.parent.Width;
     	}
     	
-    	if ( current.y > parent.parent.Height) {
-            current.y -= parent.parent.Height;
     	if ( boids.get(a).y > parent.parent.Height) {
             boids.get(a).y -= parent.parent.Height;
     	}
     	
-    	if (current.y < 0) {
-            current.y += parent.parent.Height;
     	if (boids.get(a).y < 0) {
             boids.get(a).y += parent.parent.Height;
     	}
 
-<<<<<<< Updated upstream
+
         Sepration(a, current);
         Alignment(a, current);
         Cohrention(a, current);
         Chase(a, current);
-=======
-        Sepration(a);
-        //Alignment(a);
-        Cohrention(a);
->>>>>>> Stashed changes
+
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
@@ -96,15 +90,12 @@ int boidsSize;
 
     //sepration
     public void Sepration(int n, Boid current){
-    public void Sepration(int n){
 
         double moveX = 0;
         double moveY = 0;
 
         for(int i = 0; i<boidsSize; i++){
             if (i != n){
-                int dx = current.x - boids.get(i).x;
-                int dy = current.y - boids.get(i).y;
                 int dx = boids.get(n).x - boids.get(i).x;
                 int dy = boids.get(n).y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx*dx + dy*dy);
@@ -150,7 +141,7 @@ int boidsSize;
         double alignmentX = 0;
         double alignmentY = 0;
         int count = 0;
-<<<<<<< Updated upstream
+
 
         for(int i = 0; i < boidsSize; i++){
             if(i == n) continue;
@@ -166,18 +157,8 @@ int boidsSize;
                 sumY += Math.sin(other.angle);
                 count++;
             } 
-=======
-        for(int i = 0; i<boidsSize; i++){
-            if (i != n) {
-                int dx = boids.get(n).x - boids.get(i).x;
-                int dy = boids.get(n).y - boids.get(i).y;
-                double tempradius = Math.sqrt(dx * dx + dy * dy);
-                if (tempradius < alignmentRadius) {
-                    alignmentX += boids.get(i).speedX();
-                    alignmentY += boids.get(i).speedY();
-                    count++;
-                }
->>>>>>> Stashed changes
+
+          
             }
         }
         if(count > 0){
