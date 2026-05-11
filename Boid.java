@@ -8,13 +8,16 @@ public class Boid {
     public Boid(BoidsLogic p) {
         parent = p;
 
-        type = (int)(Math.random()* 2);
+        if (Math.random() < 0.1){
+            type = 1;  // predetors
+        } else type = 0; // preys
+
 
         x = (int)(Math.random() * parent.parent.parent.Width);
         y = (int)(Math.random() * parent.parent.parent.Height);
 
         angle = Math.random() * Math.PI * 2;
-        speed = 3.0;
+        speed = 3.0; // const speed no matter the angle
     }
 
     public double speedX() {
