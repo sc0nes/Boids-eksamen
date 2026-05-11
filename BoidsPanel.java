@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
@@ -18,6 +19,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
     public BoidsGUI parent;
     public BoidsLogic boidslogic;
     double angle;
+    public int pressedX , pressedY = -10;
 
 
     public BoidsPanel(BoidsGUI p) {
@@ -30,6 +32,20 @@ public class BoidsPanel extends JPanel implements ActionListener {
 
 
     }
+    
+    public void handleMouseClick(MouseEvent e) {
+    	int x = e.getX();
+        int y = e.getY();
+        if (x >  0&& x <parent.Height) {
+        	if (y >  0&& y <parent.Height) {
+        		pressedX = x;
+        		pressedY = y;
+        		System.out.println(pressedX+" ");
+        		System.out.println(pressedY+" ");
+        	}
+        }
+    }
+    
 
 
     @Override

@@ -11,6 +11,7 @@ int alignmentRadius;
 int cohrentionRadius;
 int boidsSize;
 int huntRadius;
+int clickRadius;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
@@ -21,6 +22,7 @@ int huntRadius;
         separationRadius = 30;
         boidsSize = 300;
         huntRadius = 80;
+        clickRadius = 100;
 
        AddingBoidsToList();
     }
@@ -60,6 +62,7 @@ int huntRadius;
         Sepration(a, current);
         Alignment(a, current);
         Cohrention(a, current);
+        Movefromclick(a, current);
         if(current.type == 1) Chase(a, current);
         if(current.type == 0) Flee(a, current);
 
@@ -89,6 +92,23 @@ int huntRadius;
                 }
             }
         }
+    }
+    private void Movefromclick(int n, Boid current) {
+    	
+    	int x = parent.pressedX;
+    	int y = parent.pressedY;
+    	if (!(x == -10)) {
+                double dx = current.x - x;
+                double dy = current.y - y;
+                double dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (dist < clickRadius) {
+                    double desiredAngle = Math.atan2(dy, dx); // turn AWAY
+                    turnToward(Updateboids.get(n), desiredAngle, 0.5); // flee faster
+
+                }
+       }
+
     }
 
 
