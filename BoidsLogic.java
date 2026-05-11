@@ -10,6 +10,7 @@ int separationRadius;
 int alignmentRadius;
 int cohrentionRadius;
 int boidsSize;
+int huntRadius;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
@@ -19,6 +20,7 @@ int boidsSize;
         cohrentionRadius = 60;
         separationRadius = 30;
         boidsSize = 300;
+        huntRadius = 80;
 
        AddingBoidsToList();
     }
@@ -58,7 +60,8 @@ int boidsSize;
         Sepration(a, current);
         Alignment(a, current);
         Cohrention(a, current);
-        Chase(a, current);
+        if(current.type == 1) Chase(a, current);
+        if(current.type == 0) flee(a, current);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
@@ -67,19 +70,28 @@ int boidsSize;
 
     }
 
-    private void Chase(int a, Boid current) {
-        Boid target = boids.get(a);
-        if (target.type < current.type) {
-            // 1. Vector from current → target
-            double dx = target.x - current.x;
-            double dy = target.y - current.y;
+    private void flee(int a, Boid current) {
+    }
 
-            // 2. Desired angle toward target
-            double desiredAngle = Math.atan2(dy, dx);
+    private void Chase(int n, Boid current) {
+        for (int i = 0; i<boidsSize; i++) {
+            Boid target = boids.get(i);
 
-            // 3. Smoothly rotate toward desired angle
-            turnToward(current, desiredAngle, 0.08);
-            // 0.08 = turn speed; adjust as needed
+            if (target.type < current.type) {
+                // 1. Vector from current → target
+                double dx = target.x - current.x;
+                double dy = target.y - current.y;
+                double tempraidus = Math.sqrt(dx * dx + dy * dy);
+                if (tempraidus < huntRadius) {
+                    // 2. Desired angle toward target
+                    double desiredAngle = Math.atan2(dy, dx);
+
+
+                    // 3. Smoothly rotate toward desired angle
+                    turnToward(Updateboids.get(n), desiredAngle, 0.08);
+                    // 0.08 = turn speed; adjust as needed
+                }
+            }
         }
     }
 
@@ -92,20 +104,21 @@ int boidsSize;
 
         for(int i = 0; i<boidsSize; i++){
             if (i != n){
-                int dx = current.x - boids.get(i).x;
-                int dy = current.y - boids.get(i).y;
-                double tempradius = Math.sqrt(dx*dx + dy*dy);
-                if (tempradius < separationRadius && tempradius != 0){
-                    moveX += dx / tempradius;
-                    moveY += dy / tempradius;
+                if(current.type == boids.get(i).type) {
+                    int dx = current.x - boids.get(i).x;
+                    int dy = current.y - boids.get(i).y;
+                    double tempradius = Math.sqrt(dx * dx + dy * dy);
+                    if (tempradius < separationRadius && tempradius != 0) {
+                        moveX += dx / tempradius;
+                        moveY += dy / tempradius;
+                    }
+
                 }
-
-
             }
         }
         if(moveX != 0 || moveY != 0){
             double targetAngle = Math.atan2(moveY, moveX);
-            turnToward(current, targetAngle, 0.15);   // stronger turn for separation
+            turnToward(Updateboids.get(n), targetAngle, 0.15);   // stronger turn for separation
         }
     }
 
@@ -123,15 +136,16 @@ int boidsSize;
             if(i == n) continue;
 
             Boid other = boids.get(i);
+            if (other.type == current.type) {
+                double dx = current.x - other.x;
+                double dy = current.y - other.y;
+                double dist = Math.sqrt(dx * dx + dy * dy);
 
-            double dx = current.x - other.x;
-            double dy = current.y - other.y;
-            double dist = Math.sqrt(dx*dx + dy*dy);
-
-            if(dist < cohrentionRadius){
-                centerX += other.x;
-                centerY += other.y;
-                count++;
+                if (dist < cohrentionRadius) {
+                    centerX += other.x;
+                    centerY += other.y;
+                    count++;
+                }
             }
         }
 
@@ -144,7 +158,7 @@ int boidsSize;
             double targetAngle = Math.atan2(centerY - current.y, centerX - current.x);
 
             // smooth turn
-            turnToward(current, targetAngle, 0.03);
+            turnToward(Updateboids.get(n), targetAngle, 0.03);
         }
     }
 
@@ -169,13 +183,13 @@ int boidsSize;
                 sumX += Math.cos(other.angle);
                 sumY += Math.sin(other.angle);
                 count++;
-            } 
+            }
             }
         }
 
         if(count > 0){
             double avgAngle = Math.atan2(sumY / count, sumX / count);
-            turnToward(current, avgAngle, 0.05);
+            turnToward(Updateboids.get(n), avgAngle, 0.05);
         }
     }
 
