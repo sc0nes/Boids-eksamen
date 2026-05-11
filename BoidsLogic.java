@@ -61,7 +61,7 @@ int huntRadius;
         Alignment(a, current);
         Cohrention(a, current);
         if(current.type == 1) Chase(a, current);
-        if(current.type == 0) flee(a, current);
+        if(current.type == 0) Flee(a, current);
 
         Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
         Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
@@ -70,8 +70,26 @@ int huntRadius;
 
     }
 
-    private void flee(int a, Boid current) {
+    private void Flee(int n, Boid current) {
+
+        for (int i = 0; i < boidsSize; i++) {
+            Boid predator = boids.get(i);
+
+            // prey flees predators
+            if (predator.type > current.type) {
+
+                double dx = current.x - predator.x;   // reversed vector
+                double dy = current.y - predator.y;
+                double dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (dist < huntRadius) {
+                    double desiredAngle = Math.atan2(dy, dx); // turn AWAY
+                    turnToward(Updateboids.get(n), desiredAngle, 0.12);     // flee faster
+                }
+            }
+        }
     }
+
 
     private void Chase(int n, Boid current) {
         for (int i = 0; i<boidsSize; i++) {
