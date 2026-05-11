@@ -3,6 +3,7 @@ public class Boid {
     public int x, y;
     public double angle;   // direction the triangle points
     public double speed;   // constant forward speed
+    public double preyBonus; //exstra speed prey gets
     public int type;
 
     public Boid(BoidsLogic p) {
@@ -17,14 +18,22 @@ public class Boid {
         y = (int)(Math.random() * parent.parent.parent.Height);
 
         angle = Math.random() * Math.PI * 2;
-        speed = 3.0; // const speed no matter the angle
+        speed = 2.5; // const speed no matter the angle
+        preyBonus = 1.0;
     }
 
-    public double speedX() {
+    public double speedXPrey() {
+        return Math.cos(angle) * (speed+preyBonus);
+    }
+
+    public double speedYPrey() {
+        return Math.sin(angle) * (speed+preyBonus);
+    }
+    public double speedXPredetors() {
         return Math.cos(angle) * speed;
     }
 
-    public double speedY() {
+    public double speedYPredetors() {
         return Math.sin(angle) * speed;
     }
 }

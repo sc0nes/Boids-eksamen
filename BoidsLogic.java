@@ -63,11 +63,20 @@ int clickRadius;
         Alignment(a, current);
         Cohrention(a, current);
         Movefromclick(a, current);
-        if(current.type == 1) Chase(a, current);
-        if(current.type == 0) Flee(a, current);
-
-        Updateboids.get(a).x += (int)Updateboids.get(a).speedX();
-        Updateboids.get(a).y += (int)Updateboids.get(a).speedY();
+        if(current.type == 1) {
+        	Chase(a, current);
+        	
+        	Updateboids.get(a).x += (int)Updateboids.get(a).speedXPredetors();
+            Updateboids.get(a).y += (int)Updateboids.get(a).speedYPredetors();
+        }
+        if(current.type == 0) {
+        	Flee(a, current);
+        	
+        	Updateboids.get(a).x += (int)Updateboids.get(a).speedXPrey();
+            Updateboids.get(a).y += (int)Updateboids.get(a).speedYPrey();
+        }
+        
+        
 
 
 
@@ -87,7 +96,7 @@ int clickRadius;
 
                 if (dist < huntRadius) {
                     double desiredAngle = Math.atan2(dy, dx); // turn AWAY
-                    turnToward(Updateboids.get(n), desiredAngle, 0.2); // flee faster
+                    turnToward(Updateboids.get(n), desiredAngle, 0.3); // flee faster
 
                 }
             }
