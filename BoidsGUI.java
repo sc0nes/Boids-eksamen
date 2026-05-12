@@ -7,7 +7,7 @@ public class BoidsGUI extends JPanel{
     public int Width = 800;
     public int Height = 600;
 
-    public BoidsGUI(){
+        public BoidsGUI(){
         
         boidspanel = new BoidsPanel(this);
         JFrame mainframe = new JFrame();
