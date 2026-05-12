@@ -3,7 +3,6 @@ import java.util.*;
 public class BoidsLogic {
 public BoidsPanel parent;
 public Boid boid;
-boolean running;
 public List<Boid> boids;
 public List<Boid> Updateboids;
 int separationRadius;
@@ -16,7 +15,6 @@ int NumbersOfPredetors;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
-        running = true;
         boid = new Boid(this);
         alignmentRadius = 40;
         cohrentionRadius = 60;
@@ -35,7 +33,7 @@ int NumbersOfPredetors;
         for(int i = 0; i<boidsSize ;i++) {
             boids.add(new Boid(this));
         }
-        for(int i = 0; i<NumbersOfPredetors; i++){
+        for(int i = 1; i<NumbersOfPredetors; i++){
             boids.get(i).type = 1;
         }
         Updateboids = boids;

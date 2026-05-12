@@ -43,16 +43,16 @@ public class BoidsPanel extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
+        g2.setColor(Color.cyan);
 
 
         for (int i = 0; i<boidslogic.boidsSize;i++) {
             Graphics2D tri = (Graphics2D) g2.create();
-            if(boidslogic.Updateboids.get(i).type == 1) {
+            if(i +1< boidslogic.NumbersOfPredetors) {
                 g2.setColor(Color.black);
-            } else if(boidslogic.Updateboids.get(i).type == 0) {
+            } else if((i >= boidslogic.NumbersOfPredetors )|| (i == 0)) {
                 g2.setColor(Color.cyan);
-            } else g2.setColor(Color.red);
+            } else g2.setColor(Color.cyan);
             tri.translate(boidslogic.boids.get(i).x,boidslogic.boids.get(i).y);
             tri.rotate(boidslogic.boids.get(i).angle);
 
