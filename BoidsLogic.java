@@ -64,9 +64,10 @@ int NumbersOfPredetors;
             for(int i = 0; i< boidsSize; i++) {
                 if (boids.get(a).type != boids.get(i).type) continue; // floking by type
                 Sepration(a, current, i);
-                Alignment(a, current, i);
-                Cohrention(a, current, i);
+
             }
+            Cohrention(a, current);
+        Alignment(a, current);
 
 
         if (current.type == 1) { // predetors
@@ -122,7 +123,6 @@ int NumbersOfPredetors;
             Boid target = boids.get(i);
 
             if (target.type < current.type) {
-                // 1. Vector from current → target
                 double dx = target.x - current.x;
                 double dy = target.y - current.y;
                 double tempraidus = Math.sqrt(dx * dx + dy * dy);
@@ -158,61 +158,67 @@ int NumbersOfPredetors;
     // cohrention
 
 
-    public void Cohrention(int n, Boid current, int i){
-
+    public void Cohrention(int n, Boid current){
 
         double centerX = 0;
         double centerY = 0;
         int count = 0;
+        for(int i = 0; i<boidsSize; i++) {
 
-            if(i != n) {
+            if (i != n) {
+
 
                 Boid other = boids.get(i);
-                
-                    double dx = current.x - other.x;
-                    double dy = current.y - other.y;
-                    double dist = Math.sqrt(dx * dx + dy * dy);
+                if (boids.get(n).type != boids.get(i).type) continue;
+                double dx = current.x - other.x;
+                double dy = current.y - other.y;
+                double dist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (dist < cohrentionRadius) {
-                        centerX += other.x;
-                        centerY += other.y;
-                        double targetAngle = Math.atan2(centerY - current.y, centerX - current.x);// direction from me → center
-                        turnToward(Updateboids.get(n), targetAngle, 0.03); // smooth turn
-                    }
+                if (dist < cohrentionRadius) {
+                    centerX += other.x;
+                    centerY += other.y;
+                    count++;
+
                 }
-
-
-            
-            
-
-           
-           
+            }
         }
+        if (count>0) {
+            double targetAngle = Math.atan2((centerY - current.y) / count, (centerX - current.x) / count);  // direction from me → center
+            turnToward(Updateboids.get(n), targetAngle, 0.03);
+        }
+    }
    
 
 
     // alignment
-    public void Alignment(int n, Boid current, int i){
+    public void Alignment(int n, Boid current){
 
         double sumX = 0;
         double sumY = 0;
-      
+        int count = 0;
 
-
-            if(i != n) {
-
+        for(int i = 0; i<boidsSize; i++) {
             Boid other = boids.get(i);
-            double dx = current.x - other.x;
-            double dy = current.y - other.y;
-            double dist = Math.sqrt(dx*dx + dy*dy);
 
-            if(dist < alignmentRadius) {
-                sumX += Math.cos(other.angle);
-                sumY += Math.sin(other.angle);
-                double avgAngle = Math.atan2(sumY, sumX);
-                turnToward(Updateboids.get(n), avgAngle, 0.05);
-            	}
+
+            if (i != n) {
+                double dx = current.x - other.x;
+                double dy = current.y - other.y;
+                double dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < alignmentRadius) {
+                    sumX += Math.cos(other.angle);
+                    sumY += Math.sin(other.angle);
+                    count++;
+
+                }
             }
+        }
+        if (count >0);
+        {
+            double avgAngle = Math.atan2(sumY/count, sumX/count);
+            turnToward(Updateboids.get(n), avgAngle, 0.05);
+        }
     }
 
     private void turnToward(Boid b, double targetAngle, double turnRate){
