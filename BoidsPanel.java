@@ -31,6 +31,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
 
 
 
+
     }
     
     public void handleMouseClick(MouseEvent e) {
@@ -52,15 +53,16 @@ public class BoidsPanel extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.black);
+
+
 
         for (int i = 0; i<boidslogic.boidsSize;i++) {
             Graphics2D tri = (Graphics2D) g2.create();
-            if(boidslogic.boids.get(i).type == 1) {
+            if(boidslogic.Updateboids.get(i).type == 1) {
                 g2.setColor(Color.black);
-            } else {
+            } else if(boidslogic.Updateboids.get(i).type == 0) {
                 g2.setColor(Color.cyan);
-            }
+            } else g2.setColor(Color.red);
             tri.translate(boidslogic.boids.get(i).x,boidslogic.boids.get(i).y);
             tri.rotate(boidslogic.boids.get(i).angle);
 
@@ -80,7 +82,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
             boidslogic.Updatepos(i);
         }
 
-            boidslogic.boids = boidslogic.Updateboids;
+        boidslogic.boids = boidslogic.Updateboids;
 
         repaint();
 

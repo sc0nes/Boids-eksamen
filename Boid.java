@@ -9,10 +9,7 @@ public class Boid {
     public Boid(BoidsLogic p) {
         parent = p;
 
-        if (Math.random() < 0.1){
-            type = 1;  // predetors
-        } else type = 0; // preys
-
+        type = 0;
 
         x = (int)(Math.random() * parent.parent.parent.Width);
         y = (int)(Math.random() * parent.parent.parent.Height);

@@ -12,6 +12,7 @@ int cohrentionRadius;
 int boidsSize;
 int huntRadius;
 int clickRadius;
+int NumbersOfPredetors;
 
     public BoidsLogic(BoidsPanel p){
         parent = p;
@@ -23,19 +24,21 @@ int clickRadius;
         boidsSize = 300;
         huntRadius = 80;
         clickRadius = 100;
+        NumbersOfPredetors = (int)(boidsSize*0.05);
 
        AddingBoidsToList();
     }
 
     private void AddingBoidsToList() {
-        boids = new ArrayList<Boid>();
-        Updateboids = new ArrayList<Boid>();
+        boids = new ArrayList<>();
+        Updateboids = new ArrayList<>();
         for(int i = 0; i<boidsSize ;i++) {
             boids.add(new Boid(this));
         }
-        for(int i = 0; i<boidsSize; i++) {
-            Updateboids.add(boids.get(i));
+        for(int i = 0; i<NumbersOfPredetors; i++){
+            boids.get(i).type = 1;
         }
+        Updateboids = boids;
 
 
     }
@@ -58,46 +61,41 @@ int clickRadius;
     	if (current.y < 0) {
             current.y += parent.parent.Height;
     	}
-
-        Sepration(a, current);
-        Alignment(a, current);
-        Cohrention(a, current);
         Movefromclick(a, current);
-        if(current.type == 1) {
-        	Chase(a, current);
-        	
-        	Updateboids.get(a).x += (int)Updateboids.get(a).speedXPredetors();
-            Updateboids.get(a).y += (int)Updateboids.get(a).speedYPredetors();
+
+            for(int i = 0; i< boidsSize; i++) {
+                if (boids.get(a).type != boids.get(i).type) continue; // floking by type
+                Sepration(a, current, i);
+                Alignment(a, current, i);
+                Cohrention(a, current, i);
+            }
+
+
+        if (current.type == 1) { // predetors
+            Chase(a, current);
+
+            Updateboids.get(a).x += (int) Updateboids.get(a).speedXPredetors();
+            Updateboids.get(a).y += (int) Updateboids.get(a).speedYPredetors();
         }
-        if(current.type == 0) {
-        	Flee(a, current);
-        	
-        	Updateboids.get(a).x += (int)Updateboids.get(a).speedXPrey();
-            Updateboids.get(a).y += (int)Updateboids.get(a).speedYPrey();
+        if (current.type == 0) { //preys
+            Flee(a, current);
+
+            Updateboids.get(a).x += (int) Updateboids.get(a).speedXPrey();
+            Updateboids.get(a).y += (int) Updateboids.get(a).speedYPrey();
         }
-        
-        
-
-
-
     }
 
     private void Flee(int n, Boid current) {
-
-        for (int i = 0; i < boidsSize; i++) {
-            Boid predator = boids.get(i);
-
-            // prey flees predators
-            if (predator.type > current.type) {
-
-                double dx = current.x - predator.x;
-                double dy = current.y - predator.y;
-                double dist = Math.sqrt(dx*dx + dy*dy);
-
-                if (dist < huntRadius) {
-                    double desiredAngle = Math.atan2(dy, dx); // turn AWAY
-                    turnToward(Updateboids.get(n), desiredAngle, 0.3); // flee faster
-
+        for(int i = 0; i<boidsSize; i++) {
+            if (i != n) {
+                if (current.type < boids.get(i).type) {
+                    int dx = current.x - boids.get(i).x;
+                    int dy = current.y - boids.get(i).y;
+                    double tempradius = Math.sqrt(dx * dx + dy * dy);
+                    if (tempradius < huntRadius) {
+                        double targetAngle = Math.atan2(dy, dx);
+                        turnToward(Updateboids.get(n), targetAngle, 0.4);   // stronger turn for separation
+                    }
                 }
             }
         }
@@ -134,8 +132,8 @@ int clickRadius;
 
                     double desiredAngle = Math.atan2(dy, dx);
 
-                    turnToward(Updateboids.get(n), desiredAngle, 0.2);
-                    continue;
+                    turnToward(Updateboids.get(n), desiredAngle, 0.25);
+
 
                 }
             }
@@ -144,57 +142,46 @@ int clickRadius;
 
 
     //sepration
-    public void Sepration(int n, Boid current){
+    public void Sepration(int n, Boid current, int i){
 
-        double moveX = 0;
-        double moveY = 0;
-
-        for(int i = 0; i<boidsSize; i++){
-            if (i != n){
-                if(current.type == boids.get(i).type) {
-                    int dx = current.x - boids.get(i).x;
-                    int dy = current.y - boids.get(i).y;
-                    double tempradius = Math.sqrt(dx * dx + dy * dy);
-                    if (tempradius < separationRadius && tempradius != 0) {
-                        moveX += dx / tempradius;
-                        moveY += dy / tempradius;
-                    }
-
+        if (i != n) {
+            if (0 == boids.get(i).type) {
+                int dx = current.x - boids.get(i).x;
+                int dy = current.y - boids.get(i).y;
+                double tempradius = Math.sqrt(dx * dx + dy * dy);
+                if (tempradius < separationRadius && tempradius != 0) {
+                    double targetAngle = Math.atan2(dy, dx);
+                    turnToward(Updateboids.get(n), targetAngle, 0.4);   // stronger turn for separation
                 }
             }
-        }
-        if(moveX != 0 || moveY != 0){
-            double targetAngle = Math.atan2(moveY, moveX);
-            turnToward(Updateboids.get(n), targetAngle, 0.15);   // stronger turn for separation
         }
     }
 
     // cohrention
 
 
-    public void Cohrention(int n, Boid current){
+    public void Cohrention(int n, Boid current, int i){
 
 
         double centerX = 0;
         double centerY = 0;
         int count = 0;
 
-        for(int i = 0; i < boidsSize; i++){
-            if(i == n) continue;
+            if(i != n) {
 
-            Boid other = boids.get(i);
-            if (other.type == current.type) {
-                double dx = current.x - other.x;
-                double dy = current.y - other.y;
-                double dist = Math.sqrt(dx * dx + dy * dy);
+                Boid other = boids.get(i);
+                if (other.type == 0) {
+                    double dx = current.x - other.x;
+                    double dy = current.y - other.y;
+                    double dist = Math.sqrt(dx * dx + dy * dy);
 
-                if (dist < cohrentionRadius) {
-                    centerX += other.x;
-                    centerY += other.y;
-                    count++;
+                    if (dist < cohrentionRadius) {
+                        centerX += other.x;
+                        centerY += other.y;
+                        count++;
+                    }
                 }
             }
-        }
 
         if(count > 0){
             // center of mass
@@ -211,17 +198,17 @@ int clickRadius;
 
 
     // alignment
-    public void Alignment(int n, Boid current){
+    public void Alignment(int n, Boid current, int i){
 
         double sumX = 0;
         double sumY = 0;
         int count = 0;
 
-        for(int i = 0; i < boidsSize; i++){
-            if(i == n) continue;
+
+            if(i != n) {
 
             Boid other = boids.get(i);
-            if (other.type == current.type){
+            if (other.type == 0){
             double dx = current.x - other.x;
             double dy = current.y - other.y;
             double dist = Math.sqrt(dx*dx + dy*dy);
