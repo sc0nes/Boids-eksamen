@@ -168,7 +168,7 @@ int NumbersOfPredetors;
             if(i != n) {
 
                 Boid other = boids.get(i);
-                if (other.type == 0) {
+                
                     double dx = current.x - other.x;
                     double dy = current.y - other.y;
                     double dist = Math.sqrt(dx * dx + dy * dy);
@@ -176,23 +176,19 @@ int NumbersOfPredetors;
                     if (dist < cohrentionRadius) {
                         centerX += other.x;
                         centerY += other.y;
-                        count++;
+                        double targetAngle = Math.atan2(centerY - current.y, centerX - current.x);// direction from me → center
+                        turnToward(Updateboids.get(n), targetAngle, 0.03); // smooth turn
                     }
                 }
-            }
 
-        if(count > 0){
-            // center of mass
-            centerX /= count;
-            centerY /= count;
 
-            // direction from me → center
-            double targetAngle = Math.atan2(centerY - current.y, centerX - current.x);
+            
+            
 
-            // smooth turn
-            turnToward(Updateboids.get(n), targetAngle, 0.03);
+           
+           
         }
-    }
+   
 
 
     // alignment
@@ -200,13 +196,12 @@ int NumbersOfPredetors;
 
         double sumX = 0;
         double sumY = 0;
-        int count = 0;
+      
 
 
             if(i != n) {
 
             Boid other = boids.get(i);
-            if (other.type == 0){
             double dx = current.x - other.x;
             double dy = current.y - other.y;
             double dist = Math.sqrt(dx*dx + dy*dy);
@@ -214,15 +209,10 @@ int NumbersOfPredetors;
             if(dist < alignmentRadius) {
                 sumX += Math.cos(other.angle);
                 sumY += Math.sin(other.angle);
-                count++;
+                double avgAngle = Math.atan2(sumY, sumX);
+                turnToward(Updateboids.get(n), avgAngle, 0.05);
+            	}
             }
-            }
-        }
-
-        if(count > 0){
-            double avgAngle = Math.atan2(sumY / count, sumX / count);
-            turnToward(Updateboids.get(n), avgAngle, 0.05);
-        }
     }
 
     private void turnToward(Boid b, double targetAngle, double turnRate){
