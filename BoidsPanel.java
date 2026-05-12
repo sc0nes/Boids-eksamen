@@ -27,7 +27,7 @@ public class BoidsPanel extends JPanel implements ActionListener {
     public void handleMouseClick(MouseEvent e) {
     	int x = e.getX();
         int y = e.getY();
-        if (x >  0&& x <parent.Height) {
+        if (x >  0&& x <parent.Width) {
         	if (y >  0&& y <parent.Height) {
         		pressedX = x;
         		pressedY = y;
@@ -62,6 +62,10 @@ public class BoidsPanel extends JPanel implements ActionListener {
             tri.fillPolygon(xpoints,ypoints,3);
             tri.dispose();
         }
+        
+        /*g2.setColor(Color.red);
+        int r = 20;
+        g.drawOval(pressedX - r, pressedY - r, 2*r, r*2);*/
 
     }
 

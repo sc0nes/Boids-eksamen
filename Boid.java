@@ -8,9 +8,7 @@ public class Boid {
 
     public Boid(BoidsLogic p) {
         parent = p;
-
         type = 0;
-
         x = (int)(Math.random() * parent.parent.parent.Width);
         y = (int)(Math.random() * parent.parent.parent.Height);
 

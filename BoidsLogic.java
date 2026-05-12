@@ -19,7 +19,7 @@ int NumbersOfPredetors;
         alignmentRadius = 40;
         cohrentionRadius = 60;
         separationRadius = 30;
-        boidsSize = 300;
+        boidsSize = 400;
         huntRadius = 80;
         clickRadius = 100;
         NumbersOfPredetors = (int)(boidsSize*0.05);
@@ -99,11 +99,12 @@ int NumbersOfPredetors;
             }
         }
     }
+    
     private void Movefromclick(int n, Boid current) {
     	
     	int x = parent.pressedX;
     	int y = parent.pressedY;
-    	if (!(x == -10)) {
+    	if (!(y == -10)) {
                 double dx = current.x - x;
                 double dy = current.y - y;
                 double dist = Math.sqrt(dx*dx + dy*dy);
@@ -147,6 +148,7 @@ int NumbersOfPredetors;
                 int dx = current.x - boids.get(i).x;
                 int dy = current.y - boids.get(i).y;
                 double tempradius = Math.sqrt(dx * dx + dy * dy);
+                
                 if (tempradius < separationRadius && tempradius != 0) {
                     double targetAngle = Math.atan2(dy, dx);
                     turnToward(Updateboids.get(n), targetAngle, 0.4);   // stronger turn for separation
@@ -156,6 +158,7 @@ int NumbersOfPredetors;
     }
 
     // cohrention
+<<<<<<< Updated upstream
 
 
     public void Cohrention(int n, Boid current){
@@ -166,6 +169,13 @@ int NumbersOfPredetors;
         for(int i = 0; i<boidsSize; i++) {
 
             if (i != n) {
+=======
+    public void Cohrention(int n, Boid current, int i){
+
+
+        double centerX = 0;
+        double centerY = 0;
+>>>>>>> Stashed changes
 
 
                 Boid other = boids.get(i);
@@ -180,7 +190,11 @@ int NumbersOfPredetors;
                     count++;
 
                 }
+<<<<<<< Updated upstream
             }
+=======
+           
+>>>>>>> Stashed changes
         }
         if (count>0) {
             double targetAngle = Math.atan2((centerY - current.y) / count, (centerX - current.x) / count);  // direction from me → center
@@ -200,6 +214,7 @@ int NumbersOfPredetors;
         for(int i = 0; i<boidsSize; i++) {
             Boid other = boids.get(i);
 
+<<<<<<< Updated upstream
 
             if (i != n) {
                 double dx = current.x - other.x;
@@ -220,6 +235,16 @@ int NumbersOfPredetors;
             turnToward(Updateboids.get(n), avgAngle, 0.05);
         }
     }
+=======
+		        if(dist < alignmentRadius) {
+		            sumX += Math.cos(other.angle);
+		            sumY += Math.sin(other.angle);
+		            double avgAngle = Math.atan2(sumY, sumX);
+		            turnToward(Updateboids.get(n), avgAngle, 0.05);
+		        	}
+		        }
+		    }
+>>>>>>> Stashed changes
 
     private void turnToward(Boid b, double targetAngle, double turnRate){
         double diff = targetAngle - b.angle;
